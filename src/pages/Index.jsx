@@ -4,8 +4,8 @@ import { useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 
 // Initialize Supabase client
-const supabaseUrl = "YOUR_SUPABASE_URL";
-const supabaseAnonKey = "YOUR_SUPABASE_ANON_KEY";
+const supabaseUrl = "https://your-real-supabase-url.com";
+const supabaseAnonKey = "your-real-anonymous-key";
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const packages = [
