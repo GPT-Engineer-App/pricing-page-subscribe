@@ -8,14 +8,11 @@ const supabaseUrl = "https://your-real-supabase-url.com";
 const supabaseAnonKey = "your-real-anonymous-key";
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-const packages = [
-  { id: 1, name: "Basic", price: "$9/month", features: ["Feature 1", "Feature 2", "Feature 3"] },
-  { id: 2, name: "Standard", price: "$29/month", features: ["Feature 1", "Feature 2", "Feature 3", "Feature 4"] },
-  { id: 3, name: "Premium", price: "$49/month", features: ["Feature 1", "Feature 2", "Feature 3", "Feature 4", "Feature 5"] },
-];
+import { useEffect } from "react";
 
 const Index = () => {
   const [loading, setLoading] = useState(false);
+  const [packages, setPackages] = useState([]);
 
   const subscribe = async (packageName) => {
     setLoading(true);
@@ -31,6 +28,19 @@ const Index = () => {
     setLoading(false);
   };
 
+  useEffect(() => {
+    const fetchPackages = async () => {
+      const { data, error } = await supabase.from("packages").select("*");
+      if (error) {
+        console.error("Error fetching packages:", error);
+      } else {
+        setPackages(data);
+      }
+    };
+
+    fetchPackages();
+  }, []);
+
   return (
     <Container maxW="container.xl" py={10}>
       <Heading as="h1" mb={6} textAlign="center">
@@ -45,8 +55,8 @@ const Index = () => {
               </Heading>
               <Text fontSize="2xl">{pkg.price}</Text>
               <Box>
-                {pkg.features.map((feature) => (
-                  <Text key={feature}>
+                {pkg.features.map((feature, index) => (
+                  <Text key={index}>
                     <FaCheckCircle /> {feature}
                   </Text>
                 ))}
